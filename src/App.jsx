@@ -9,15 +9,13 @@ import Dashboard from './pages/Dashboard';
 import Transactions from './pages/Transactions';
 import AddTransaction from './pages/AddTransaction';
 import Budget from './pages/Budget';
+import Goals from './pages/Goals';
 import Analytics from './pages/Analytics';
-
-// Fix #4: Wrapped all route pages in <ErrorBoundary> so a crash in one page
-//          never takes down the whole app — just that section.
-// Fix #9: Dashboard NavLink now uses /dashboard (changed inside Navbar.jsx)
-// Fix #14: Added catch-all <Route path="*"> to redirect unknown URLs to dashboard
+import CommandPalette from './components/CommandPalette';
 
 function App() {
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark');
+  const [cmdOpen, setCmdOpen] = useState(false);
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -33,7 +31,17 @@ function App() {
       <BrowserRouter>
         <div className="app-container">
           <ToastContainer position="bottom-right" theme={theme} />
-          <Navbar theme={theme} toggleTheme={toggleTheme} />
+          <Navbar
+            theme={theme}
+            toggleTheme={toggleTheme}
+            onOpenCommandPalette={() => setCmdOpen(true)}
+          />
+          <CommandPalette
+            isOpen={cmdOpen}
+            onClose={() => setCmdOpen(false)}
+            theme={theme}
+            toggleTheme={toggleTheme}
+          />
           <main className="main-content">
             <ErrorBoundary>
               <Routes>
@@ -42,8 +50,8 @@ function App() {
                 <Route path="/transactions" element={<Transactions />} />
                 <Route path="/transactions/new" element={<AddTransaction />} />
                 <Route path="/budget" element={<Budget />} />
+                <Route path="/goals" element={<Goals />} />
                 <Route path="/analytics" element={<Analytics />} />
-                {/* Fix #14: Catch-all route — any unknown URL redirects to dashboard */}
                 <Route path="*" element={<Navigate to="/dashboard" replace />} />
               </Routes>
             </ErrorBoundary>

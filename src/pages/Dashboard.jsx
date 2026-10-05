@@ -7,6 +7,7 @@ import { CategoryDonutChart } from '../components/Charts';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { fetchExchangeRates } from '../services/api';
+import AnimatedNumber from '../components/AnimatedNumber';
 import './Pages.css';
 
 const Dashboard = () => {
@@ -83,15 +84,30 @@ const Dashboard = () => {
             <div className="summary-cards">
                 <div className="summary-card balance">
                     <h4>Net Balance</h4>
-                    <h2>{formatCurrency(netBalance)}</h2>
+                    <h2>
+                        <AnimatedNumber
+                            value={netBalance}
+                            formatFn={(val) => formatCurrency(val)}
+                        />
+                    </h2>
                 </div>
                 <div className="summary-card income">
                     <h4>Total Income</h4>
-                    <h2>{formatCurrency(totalIncome)}</h2>
+                    <h2 className="text-success">
+                        <AnimatedNumber
+                            value={totalIncome}
+                            formatFn={(val) => formatCurrency(val)}
+                        />
+                    </h2>
                 </div>
                 <div className="summary-card expenses">
                     <h4>Total Expenses</h4>
-                    <h2>{formatCurrency(totalExpenses)}</h2>
+                    <h2 className="text-danger">
+                        <AnimatedNumber
+                            value={totalExpenses}
+                            formatFn={(val) => formatCurrency(val)}
+                        />
+                    </h2>
                 </div>
                 <div className="summary-card top-category">
                     <h4>Top Expense</h4>

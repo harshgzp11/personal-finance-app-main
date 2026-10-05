@@ -1,9 +1,11 @@
 import React, { useContext, useMemo } from 'react';
 import { FinanceContext } from '../context/FinanceContext';
 import { useCurrency } from '../hooks/useCurrency';
-import { CategoryDonutChart, ExpenseTrendAreaChart, IncomeExpenseBarChart, CashFlowAreaChart } from '../components/Charts';
+import { CategoryDonutChart, ExpenseTrendAreaChart, IncomeExpenseBarChart, CashFlowAreaChart, ForecastLineChart } from '../components/Charts';
 import { format, differenceInCalendarMonths } from 'date-fns';
 import { motion } from 'framer-motion';
+import { FiCpu, FiAlertCircle, FiCheckCircle, FiTrendingUp } from 'react-icons/fi';
+import AnimatedNumber from '../components/AnimatedNumber';
 import './Pages.css';
 
 const Analytics = () => {
@@ -81,11 +83,65 @@ const Analytics = () => {
             avgExp = totalExpense / spanMonths;
         }
 
+        // 6-Month Predictive Savings Forecast
+        const recentMonths = sortedMonths.slice(-3);
+        const avgMonthlyNet = recentMonths.length > 0
+            ? recentMonths.reduce((sum, m) => sum + (m.income - m.expense), 0) / recentMonths.length
+            : 0;
+
+        const forecastData = [];
+        let runningProjected = cumulativeBalance;
+        const now = new Date();
+        for (let i = 1; i <= 6; i++) {
+            const nextDate = new Date(now.getFullYear(), now.getMonth() + i, 1);
+            runningProjected += avgMonthlyNet;
+            forecastData.push({
+                month: format(nextDate, 'MMM yy'),
+                projected: Math.round(runningProjected),
+                baseline: cumulativeBalance
+            });
+        }
+
+        // Smart Spending Insights / AI Rules
+        const insights = [];
+        if (Number(sr) >= 30) {
+            insights.push({
+                type: 'success',
+                title: 'High Savings Rate',
+                message: `You're saving ${sr}% of income! Excellent financial resilience.`
+            });
+        } else if (Number(sr) > 0 && Number(sr) < 15) {
+            insights.push({
+                type: 'warning',
+                title: 'Low Savings Rate Alert',
+                message: `Your savings rate is ${sr}%. Target at least 20% by cutting non-essential expenses.`
+            });
+        } else if (Number(sr) <= 0 && totalIncome > 0) {
+            insights.push({
+                type: 'danger',
+                title: 'Deficit Alert',
+                message: 'Your expenses exceed your current income. Review top categories immediately.'
+            });
+        }
+
+        if (topCat !== 'N/A' && pieMapped.length > 0) {
+            const topPct = ((pieMapped[0].value / (totalExpense || 1)) * 100).toFixed(0);
+            if (Number(topPct) > 40) {
+                insights.push({
+                    type: 'warning',
+                    title: `Heavy ${topCat} Concentration`,
+                    message: `${topCat} accounts for ${topPct}% of all your expenses. Try setting a strict limit in Budget Planner.`
+                });
+            }
+        }
+
         return {
             pieData: pieMapped,
             trendData: sortedMonths,
             comparisonData: sortedMonths,
             cashFlowData: sortedMonths,
+            forecastData,
+            insights,
             kpiTopCategory: topCat,
             kpiAvgExpense: avgExp,
             kpiSavingsRate: sr
@@ -109,17 +165,54 @@ const Analytics = () => {
             <div className="summary-cards">
                 <div className="summary-card">
                     <h4>Average Monthly Expense</h4>
-                    <h2>{formatCurrency(kpiAvgExpense)}</h2>
+                    <h2>
+                        <AnimatedNumber
+                            value={kpiAvgExpense}
+                            formatFn={(val) => formatCurrency(val)}
+                        />
+                    </h2>
                 </div>
                 <div className="summary-card">
                     <h4>Savings Rate</h4>
-                    <h2>{kpiSavingsRate}%</h2>
+                    <h2 className={Number(kpiSavingsRate) >= 20 ? 'text-success' : 'text-warning'}>
+                        {kpiSavingsRate}%
+                    </h2>
                 </div>
                 <div className="summary-card">
                     <h4>Top Spending Category</h4>
                     <h2>{kpiTopCategory}</h2>
                 </div>
             </div>
+
+            {/* Smart Spending Insights / AI Coach Card */}
+            {insights.length > 0 && (
+                <div className="ai-insights-panel">
+                    <div className="ai-insights-header">
+                        <FiCpu className="ai-insights-icon" />
+                        <div>
+                            <h3>AI Spending Intelligence & Coaching</h3>
+                            <p>Real-time pattern analysis and proactive budget advisory.</p>
+                        </div>
+                    </div>
+                    <div className="ai-insights-grid">
+                        {insights.map((ins, idx) => (
+                            <div key={idx} className={`ai-insight-card ${ins.type}`}>
+                                <div className="ai-insight-top">
+                                    {ins.type === 'success' ? (
+                                        <FiCheckCircle className="text-success" />
+                                    ) : ins.type === 'danger' ? (
+                                        <FiAlertCircle className="text-danger" />
+                                    ) : (
+                                        <FiTrendingUp className="text-warning" />
+                                    )}
+                                    <span className="ai-insight-title">{ins.title}</span>
+                                </div>
+                                <p className="ai-insight-msg">{ins.message}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
 
             {/* Charts Grid */}
             <div className="charts-grid">
@@ -129,8 +222,11 @@ const Analytics = () => {
                 <IncomeExpenseBarChart data={comparisonData} />
                 <CategoryDonutChart data={pieData} />
                 <div className="chart-full-width">
-                    {/* Fix #13: Updated import to ExpenseTrendAreaChart (accurate name) */}
                     <ExpenseTrendAreaChart data={trendData} />
+                </div>
+                {/* 6-Month Wealth Forecast */}
+                <div className="chart-full-width">
+                    <ForecastLineChart data={forecastData} />
                 </div>
             </div>
         </motion.div>

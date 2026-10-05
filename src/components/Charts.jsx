@@ -141,3 +141,34 @@ ExpenseTrendAreaChart.propTypes = {
 
 // Backwards-compatible alias so Analytics.jsx import still works
 export const ExpenseTrendLineChart = ExpenseTrendAreaChart;
+
+export const ForecastLineChart = ({ data }) => {
+    if (!data || data.length === 0) return <div className="no-data-chart">No projection data available</div>;
+    return (
+        <div className="chart-container">
+            <h3>6-Month Projected Wealth Forecast (ML Projection)</h3>
+            <ResponsiveContainer width="100%" height={300}>
+                <AreaChart data={data} margin={{ top: 10, right: 10, left: 20, bottom: 0 }}>
+                    <defs>
+                        <linearGradient id="colorProjected" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="#10b981" stopOpacity={0.25} />
+                            <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                        </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                    <XAxis dataKey="month" tickLine={false} axisLine={false} dy={10} />
+                    <YAxis tickLine={false} axisLine={false} tickFormatter={(val) => `₹${val}`} />
+                    <Tooltip formatter={(value) => `₹${value.toLocaleString('en-IN')}`} />
+                    <Area type="monotone" dataKey="projected" name="Projected Wealth" stroke="#10b981" strokeWidth={3} strokeDasharray="4 4" fillOpacity={1} fill="url(#colorProjected)" />
+                </AreaChart>
+            </ResponsiveContainer>
+        </div>
+    );
+};
+
+ForecastLineChart.propTypes = {
+    data: PropTypes.arrayOf(PropTypes.shape({
+        month: PropTypes.string.isRequired,
+        projected: PropTypes.number.isRequired
+    }))
+};
