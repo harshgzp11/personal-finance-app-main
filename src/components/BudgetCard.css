@@ -1,0 +1,14 @@
+.budget-card { background: var(--card-bg); border-radius: var(--radius); padding: 1.5rem; border: 1px solid var(--card-border); margin-bottom: 1.5rem; box-shadow: var(--shadow-sm); }
+.bc-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; }
+.bc-header h3 { margin: 0; color: var(--text-secondary); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+.bc-amount { font-size: 1.5rem; font-weight: 600; color: var(--text-primary); margin-right: 0.5rem; text-shadow: none; }
+.bc-display-mode, .bc-edit-mode { display: flex; align-items: center; }
+.bg-input { padding: 0.4rem 0.5rem; border: 1px solid var(--accent-primary); border-radius: var(--radius); width: 100px; margin-right: 0.5rem; font-size: 1rem; background: var(--input-bg); color: var(--text-primary); outline: none; box-shadow: none; }
+.bc-stats { display: flex; justify-content: space-between; margin-bottom: 1rem; }
+.bc-stat { display: flex; flex-direction: column; gap: 0.25rem; }
+.bc-stat span { font-size: 0.75rem; color: var(--text-secondary); }
+.bc-stat strong { font-size: 1rem; color: var(--text-primary); font-weight: 600; }
+.bc-progress-container { width: 100%; }
+.bc-progress-bar { height: 6px; background: var(--hover-bg); border-radius: 999px; overflow: hidden; margin-bottom: 0.5rem; border: none; box-shadow: none; }
+.bc-progress-fill { height: 100%; border-radius: 999px; transition: width 0.3s ease; box-shadow: none; }
+.bc-percentage { margin: 0; text-align: right; font-size: 0.75rem; color: var(--text-secondary); font-weight: 500; }

@@ -1,0 +1,6 @@
+/* SearchBar styles — Fix #12: Extracted from Filters.css into a dedicated file */
+.search-bar { position: relative; width: 100%; margin-bottom: 1.5rem; }
+.search-icon { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 1.125rem; }
+.search-bar input { width: 100%; padding: 0.75rem 1rem 0.75rem 2.75rem; border: 1px solid var(--card-border); border-radius: var(--radius); font-size: 0.875rem; outline: none; box-sizing: border-box; transition: border-color 0.15s; background: var(--input-bg); color: var(--text-primary); box-shadow: var(--shadow-sm); }
+.search-bar input::placeholder { color: var(--text-muted); }
+.search-bar input:focus { border-color: var(--accent-primary); box-shadow: 0 0 0 1px var(--accent-primary); background: var(--input-focus-bg); }

@@ -1,0 +1,128 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  
+  /* Dark Mode Default (True Black) */
+  --bg-dark: #000000;
+  --card-bg: #0a0a0a;
+  --card-border: #27272a;
+  
+  --text-primary: #f4f4f5;
+  --text-secondary: #a1a1aa;
+  --text-muted: #52525b;
+  
+  --accent-primary: #3b82f6; /* Professional Blue */
+  --accent-hover: #2563eb;
+  --success: #10b981;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+
+  --body-bg: #000000;
+  --navbar-bg: #000000;
+  --navbar-border: #27272a;
+  --budget-grad-1: #0a0a0a;
+  --budget-grad-2: #0a0a0a;
+  --input-bg: #000000;
+  --input-focus-bg: #0a0a0a;
+  --hover-bg: #27272a;
+  --hover-icon-bg: #18181b;
+  --chart-tooltip-bg: #0a0a0a;
+  --empty-state-bg: #000000;
+  
+  --scrollbar-thumb: #27272a;
+  --scrollbar-thumb-hover: #3f3f46;
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --radius: 8px;
+}
+
+[data-theme='light'] {
+  color-scheme: light;
+  
+  /* Clean Professional Palette with Soothing Navbar */
+  --bg-dark: #f8fafc;
+  --card-bg: #ffffff; 
+  --card-border: #e2e8f0;
+  
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  
+  /* Clean very light slate background for contrast against white cards */
+  --body-bg: #f1f5f9;
+  
+  /* Soothing Color for Navbar (Soft Sky Blue) */
+  --navbar-bg: rgba(224, 242, 254, 0.95); 
+  --navbar-border: #bae6fd;
+  
+  --budget-grad-1: #ffffff;
+  --budget-grad-2: #ffffff;
+  --input-bg: #ffffff;
+  --input-focus-bg: #f8fafc;
+  --hover-bg: #f1f5f9;
+  --hover-icon-bg: #e2e8f0;
+  --chart-tooltip-bg: #ffffff;
+  --empty-state-bg: #f8fafc;
+  
+  --scrollbar-thumb: #cbd5e1;
+  --scrollbar-thumb-hover: #94a3b8;
+
+  --accent-glow: transparent;
+  --success-glow: transparent;
+  --danger-glow: transparent;
+  
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+
+body {
+  margin: 0;
+  display: flex;
+  min-height: 100vh;
+  background: var(--body-bg);
+  -webkit-font-smoothing: antialiased;
+  color: var(--text-primary);
+}
+
+#root {
+  width: 100%;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  padding-bottom: 3rem;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+* { box-sizing: border-box; }
+h1, h2, h3, h4, h5, h6 { margin: 0; font-weight: 600; letter-spacing: -0.01em; }
+a { color: var(--accent-primary); text-decoration: none; transition: color 0.15s ease-in-out; }
+a:hover { color: var(--accent-hover); }
+
+.text-success { color: var(--success) !important; }
+.text-danger { color: var(--danger) !important; }
+.text-warning { color: var(--warning) !important; }
